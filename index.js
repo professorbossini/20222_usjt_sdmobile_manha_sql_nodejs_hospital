@@ -1,5 +1,6 @@
 const express = require ('express')
 const mysql2 = require('mysql2')
+const nodemon = require('nodemon')
 const app = express()
 app.use(express.json())
 
@@ -22,8 +23,8 @@ app.post('/medicos', (req, res) => {
   const connection = mysql2.createConnection({
     host: 'localhost',
     user: 'root',
-    database: '20222_usjt_sdmobile_manha_hospital',
-    password: '12345678'
+    database: 'hospital',
+    password: 'Ae@125445364'
     // {crm: 774477, nome: 'Jaqueline Alves'}
   })
     // const crm = req.body.crm
@@ -31,9 +32,9 @@ app.post('/medicos', (req, res) => {
     const { crm, nome } = req.body
     
     // sql injection pde acontecer aqui, não faça assim. Ou seja, não concatene."
-    const sql = "INSERT INTO tb_medico (crm, nome) VALUES ( " + crm + ", '" + nome + "')"
+    const sql = "INSERT INTO tb_medico (crm, nome) VALUES (?, ?)"
 
-    connection.query(sql, (err, results, fields) => {
+    connection.query(sql, [crm, nome], (err, results, fields) => {
       console.log("Erro: ", err)
       console.log("Results: ", results)
       console.log("Fields: ", fields)
@@ -85,4 +86,6 @@ app.get('/pacientes', (req, res) => {
 
 const porta = 3000
 app.listen(porta, () => console.log(`Executando. Porta ${porta}`))
+
+
 
