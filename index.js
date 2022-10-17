@@ -78,6 +78,32 @@ app.get('/pacientes', (req, res) => {
   })
 })
 
+app.get('/consultas', (req, res) => {
+  //1. abrir conexão com o MySQL
+  const connection = mysql2.createConnection({
+    host: DB_HOST,
+    user: DB_USER,
+    database: DB_SCHEMA,
+    password: DB_PASSWORD
+  })
+  //2. Especificar o comando SQL
+  const sql = `
+    SELECT m.nome as nome_medico, c.data_hora, p.nome as nome_paciente
+      FROM tb_medico m, tb_consulta c, tb_paciente p
+      WHERE
+      m.crm = c.crm AND c.cpf = p.cpf
+  `
+  //3. Executar o comando
+  connection.query(
+    sql,
+    (err, results, fields) => {
+      //4. Na callback, devolver o resultado para o cliente
+      res.json(results)
+    }
+  )
+
+})
+
 const porta = 3000
 app.listen(porta, () => console.log(`Executando. Porta ${porta}`))
 
