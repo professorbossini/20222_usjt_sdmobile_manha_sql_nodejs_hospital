@@ -1,30 +1,24 @@
+require('dotenv').config()
 const express = require ('express')
 const mysql2 = require('mysql2')
 const nodemon = require('nodemon')
 const app = express()
 app.use(express.json())
 
-//GET http://localhost:3000/medicos
-/* 
-	[
-		{
-			crm: 12345,
-			nome: "José"
-		},
-		{
-			crm: 787878,
-			nome: "Maria"
-		}
-	]
-*/
+// const DB_HOST = process.env.DB_HOST
+// const DB_USER = process.env.DB_USER
+// const DB_SCHEMA = process.env.DB_SCHEMA
+// const DB_PASSWORD = process.env.DB_PASSWORD
+
+const {DB_HOST, DB_USER, DB_SCHEMA, DB_PASSWORD} = process.env
 
 //POST http://localhost:3000/medicos
 app.post('/medicos', (req, res) => {
   const connection = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'hospital',
-    password: 'Ae@125445364'
+    host: DB_HOST,
+    user: DB_USER,
+    database: DB_SCHEMA,
+    password: DB_PASSWORD
     // {crm: 774477, nome: 'Jaqueline Alves'}
   })
     // const crm = req.body.crm
@@ -47,10 +41,10 @@ app.post('/medicos', (req, res) => {
 app.get('/medicos', (req, res) => {
 	//1 abrir uma conexão com o MySQL
 	const connection = mysql2.createConnection({
-		host: 'localhost',
-		user: 'root',
-		database: '20222_usjt_sdmobile_manha_hospital',
-		password: '12345678'
+		host: DB_HOST,
+		user: DB_USER,
+		database: DB_SCHEMA,
+		password: DB_PASSWORD
 	})
 	//2. Executar o comando SQL
 	connection.query('SELECT * FROM tb_medico', (err, results, fields) => {
@@ -67,10 +61,10 @@ app.get('/medicos', (req, res) => {
 app.get('/pacientes', (req, res) => {
   //estamos abrindo uma conexão com o MySQL...
   const conexao = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: '20222_usjt_sdmobile_manha_hospital',
-    password: '12345678'
+    host: DB_HOST,
+    user: DB_USER,
+    database: DB_SCHEMA,
+    password: DB_PASSWORD
   })
 
   //vamos executar o comando SELECT..
